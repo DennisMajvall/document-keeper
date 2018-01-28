@@ -22,7 +22,7 @@ public class FXMLDocumentController implements Initializable {
     private void handleButtonAction(ActionEvent event) {
         System.out.println("You clicked me!");
 
-        myFileChooser.showOpenMultipleDialog(DocumentKeeper.stage);
+        myFileChooser.showOpenMultipleDialog(Main.stage);
     }
 
     @Override
