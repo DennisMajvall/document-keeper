@@ -7,13 +7,11 @@ public class Files extends DbEntity{
     public Files() {
     }
 
-    public Files(Integer id, String name) {
-        this.id = id;
+    public Files(String name) {
         this.name = name;
     }
 
-    public Files(Integer id, String name, int bytes) {
-        this.id = id;
+    public Files(String name, int bytes) {
         this.name = name;
         this.bytes = bytes;
     }
