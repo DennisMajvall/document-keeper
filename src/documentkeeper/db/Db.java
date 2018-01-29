@@ -89,25 +89,7 @@ public class Db {
 
         return instances;
     }
-
-    public <T> void mapEntities(ArrayList<T> instances, ResultSet rs) {
-        try {
-            ResultSetMetaData meta = rs.getMetaData();
-            int numColumns = meta.getColumnCount();
-
-            ArrayList<String> colNames = getColNames(rs);
-//            setColumns(instance, rs, colNames);
-
-
-            while(rs.next()) {
-                for (int i = 1; i < numColumns+1; i++) {
-                    String colName = rs.getMetaData().getColumnName(i).toLowerCase();
-                    ((DbEntity)instances.get(0)).set(colName, rs.getObject(i));
-                }
-            }
-        } catch (SQLException ex) { System.out.println("Error Db.mapEntities: " + ex); }
-    }
-
+    
     public ResultSet query(String q){
         ResultSet result = null;
 
