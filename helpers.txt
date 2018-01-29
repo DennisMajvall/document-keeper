@@ -1,5 +1,17 @@
-GENERATED ALWAYS AS IDENTITY(START WITH 1, INCREMENT BY 1)
+To make a column auto_increment:
+  GENERATED ALWAYS AS IDENTITY(START WITH 1, INCREMENT BY 1)
 
+To make a column unique:
 CONSTRAINT SOME_NAME_HERE UNIQUE (COL_NAME);
 
--XDignore.symbol.file
+Example:
+create table "ROOT".TEST
+(
+	ID INTEGER not null primary key GENERATED ALWAYS AS IDENTITY(START WITH 1, INCREMENT BY 1),
+	NAME VARCHAR(64) not null,
+	BYTES INTEGER default 0 not null,
+	CONSTRAINT SOME_NAME_HERE UNIQUE (NAME)
+)
+
+Netbeans Java Derby in-action: https://i.imgur.com/yhG3xq8.png
+How to set up Java Derby in Netbeans: https://codezone4.wordpress.com/2012/06/19/java-database-application-using-javadb-part-1/

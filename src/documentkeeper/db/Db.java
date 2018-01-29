@@ -159,6 +159,7 @@ public class Db {
     }
 
     private boolean executeUpdateInsert(String q, DbEntity entity, String tableName){
+
         try {
             PreparedStatement statement = myConnection.prepareStatement(q, new String[] { "id"} );
             String[] colNames = tableColumns.get(tableName);
@@ -176,7 +177,7 @@ public class Db {
             }
 
             return rowsUpdated > 0;
-        } catch (Exception ex) { Logger.getGlobal().log(Level.SEVERE, null, ex); }
+        } catch (Exception ex) { Logger.getGlobal().log(Level.WARNING, null, ex); }
 
         return false;
     }
