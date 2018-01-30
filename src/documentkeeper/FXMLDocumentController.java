@@ -2,7 +2,12 @@ package documentkeeper;
 
 import documentkeeper.db.*;
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -48,20 +53,20 @@ public class FXMLDocumentController implements Initializable {
 
     private void importFiles(List<File> files) {
         files.forEach((f)->{
-            String s = f.getName();
-            String encryptedName = "nope";
 
-            int fileSize = (int)f.length(); // Checksum of file-content is a better choice.
+            Path path = Paths.get(f.getPath());
+            byte[] data = null;
 
-
-            Files file = new Files(encryptedName, fileSize);
-            boolean saveResult = file.save();
-            
-            if (!saveResult) {
-                System.out.println("Already imported:" + s);
-            } else {
-                System.out.println("importing :" + s);
+            try {
+                data = java.nio.file.Files.readAllBytes(path);
+            } catch (IOException ex) {
+                Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
             }
+
+            long checksum = Hash.checksum(data);
+
+            Files file = new Files(f.getName(), checksum);
+            file.save();
         });
     }
 

@@ -22,13 +22,13 @@ public class Db {
       if(myInstance == null) { myInstance = new Db(); }
       return myInstance;
     }
-    
+
     private Db(){
         try {
             String url = "jdbc:derby://localhost:1527/doc";
             String username = "root";
             String password = "root";
-            
+
             myConnection = DriverManager.getConnection(url ,username, password);
             myStatement = myConnection.createStatement();
             myUpdatableStatement = myConnection.createStatement(
@@ -80,7 +80,7 @@ public class Db {
         }
         query = query.substring(0, query.length()-2);
         query += ")";
-        
+
         boolean result = executeUpdateInsert(query, entity, tableName);
         if (result) { entity.isNew = false; }
         return result;
@@ -142,6 +142,9 @@ public class Db {
                 case java.sql.Types.TINYINT:
                     statement.setInt(index, (int)val);
                     break;
+                case java.sql.Types.BIGINT:
+                    statement.setLong(index, (long)val);
+                    break;
                 case java.sql.Types.FLOAT:
                 case java.sql.Types.NUMERIC:
                 case java.sql.Types.DOUBLE:
@@ -155,7 +158,10 @@ public class Db {
                 default:
                     System.out.println("could not set variable of type: " + type);
             }
-        } catch (Exception ex) { Logger.getGlobal().log(Level.SEVERE, null, ex); }
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+//            Logger.getGlobal().log(Level.SEVERE, null, ex);
+        }
     }
 
     private boolean executeUpdateInsert(String q, DbEntity entity, String tableName){
@@ -169,7 +175,13 @@ public class Db {
                 setStatementVariable(statement, i+1, entity.get(colNames[i]), colTypes[i]);
             }
 
-            int rowsUpdated = statement.executeUpdate();
+            int rowsUpdated = 0;
+            try {
+                rowsUpdated = statement.executeUpdate();
+            } catch (Exception ex) {
+                System.out.println(ex.getMessage());
+    //            Logger.getGlobal().log(Level.SEVERE, null, ex);
+            }
 
             ResultSet rs = statement.getGeneratedKeys();
             if(rs != null && rs.next()) {
@@ -215,7 +227,7 @@ public class Db {
             tableColumnTypes.put(tableName, colTypes);
         } catch (Exception ex) { Logger.getGlobal().log(Level.SEVERE, null, ex); }
     }
-    
+
     private <T> boolean setColumns(T instance, ResultSet rs, ArrayList<String> colNames) {
         try {
             for (String colName : colNames) {
@@ -225,14 +237,14 @@ public class Db {
         } catch (Exception ex) { Logger.getGlobal().log(Level.SEVERE, null, ex); }
         return false;
     }
-    
+
     private ArrayList<String> getColNames(ResultSet rs) {
         ArrayList<String> result = new ArrayList();
 
         try {
             ResultSetMetaData meta = rs.getMetaData();
             int numColumns = meta.getColumnCount();
-            
+
             for (int i = 1; i < numColumns+1; i++) {
                 result.add(meta.getColumnName(i).toLowerCase());
             }

@@ -2,7 +2,7 @@ package documentkeeper.db;
 
 public class Files extends DbEntity{
     public String name;
-    public int bytes;
+    public long checksum;
 
     public Files() {
     }
@@ -11,9 +11,9 @@ public class Files extends DbEntity{
         this.name = name;
     }
 
-    public Files(String name, int bytes) {
+    public Files(String name, long checksum) {
         this.name = name;
-        this.bytes = bytes;
+        this.checksum = checksum;
     }
 
 }
