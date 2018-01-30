@@ -5,12 +5,12 @@ To make a column unique:
 CONSTRAINT SOME_NAME_HERE UNIQUE (COL_NAME);
 
 Example:
-create table "ROOT".TEST
+create table "ROOT".FILES
 (
-	ID INTEGER not null primary key GENERATED ALWAYS AS IDENTITY(START WITH 1, INCREMENT BY 1),
-	NAME VARCHAR(64) not null,
-	BYTES INTEGER default 0 not null,
-	CONSTRAINT SOME_NAME_HERE UNIQUE (NAME)
+  ID INTEGER not null primary key GENERATED ALWAYS AS IDENTITY(START WITH 1, INCREMENT BY 1),
+  NAME VARCHAR(128) not null,
+  CHECKSUM BIGINT not null,
+  CONSTRAINT unique_checksum UNIQUE (CHECKSUM)
 )
 
 Netbeans Java Derby in-action: https://i.imgur.com/yhG3xq8.png

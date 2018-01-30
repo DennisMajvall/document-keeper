@@ -1,5 +1,6 @@
 package documentkeeper;
 
+import java.io.UnsupportedEncodingException;
 import java.util.Base64;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -21,6 +22,14 @@ public class Hash {
         return checksum.getValue();
     }
 
+    public static byte[] stringToBytes(String text) {
+        try {
+            return text.getBytes("UTF8");
+        } catch (UnsupportedEncodingException ex) {
+            Logger.getLogger(Hash.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
     public static String encrypt(String text) {
         try {
             SecretKeySpec key = new SecretKeySpec(strKey.getBytes("UTF8"), "Blowfish");

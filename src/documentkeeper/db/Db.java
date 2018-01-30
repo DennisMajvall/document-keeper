@@ -114,7 +114,10 @@ public class Db {
         ArrayList<T> instances = new ArrayList<>();
 
         try {
-            rs.next();
+            boolean hasResults = rs.next();
+            if (!hasResults) {
+                return instances;
+            }
             ArrayList<String> colNames = getColNames(rs);
 
             do {
